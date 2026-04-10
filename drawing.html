@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Smooth AI Air Drawing</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, #141e30, #243b55);
+        font-family: Arial;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: white;
+      }
+
+      canvas {
+        border-radius: 12px;
+        border: 3px solid cyan;
+
+        box-shadow:
+          0 0 20px cyan,
+          0 0 40px blue,
+          0 0 60px purple;
+      }
+
+      button {
+        margin: 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        background: #ff416c;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      #result {
+        font-size: 20px;
+        color: yellow;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>🧠 Smooth AI Air Drawing</h2>
+
+    <video id="video" style="display: none"></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <div>
+      <button onclick="clearCanvas()">Clear</button>
+      <button onclick="predict()">AI Guess</button>
+    </div>
+
+    <div id="result">Draw smoothly with finger ✋</div>
+
+    <script>
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      let lastX = null;
+      let lastY = null;
+
+      let smoothX = null;
+      let smoothY = null;
+
+      ctx.lineWidth = 6;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "yellow";
+
+      function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById("result").innerHTML = "Canvas cleared";
+      }
+
+      function lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+
+      const hands = new Hands({
+        locateFile: (file) =>
+          `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+      });
+
+      hands.setOptions({
+        maxNumHands: 1,
+        modelComplexity: 1,
+        minDetectionConfidence: 0.7,
+        minTrackingConfidence: 0.7,
+      });
+
+      hands.onResults((results) => {
+        if (results.multiHandLandmarks.length > 0) {
+          const finger = results.multiHandLandmarks[0][8];
+
+          let x = (1 - finger.x) * canvas.width;
+          let y = finger.y * canvas.height;
+
+          // smoothing
+          if (smoothX == null) {
+            smoothX = x;
+            smoothY = y;
+          }
+
+          smoothX = lerp(smoothX, x, 0.35);
+          smoothY = lerp(smoothY, y, 0.35);
+
+          // jitter filter
+          if (lastX != null) {
+            let dx = smoothX - lastX;
+            let dy = smoothY - lastY;
+
+            let dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist > 2) {
+              ctx.beginPath();
+              ctx.moveTo(lastX, lastY);
+              ctx.lineTo(smoothX, smoothY);
+              ctx.stroke();
+            }
+          }
+
+          lastX = smoothX;
+          lastY = smoothY;
+        } else {
+          lastX = null;
+          lastY = null;
+          smoothX = null;
+          smoothY = null;
+        }
+      });
+
+      const camera = new Camera(video, {
+        onFrame: async () => {
+          await hands.send({ image: video });
+        },
+        width: 640,
+        height: 480,
+      });
+
+      camera.start();
+
+      // AI model
+
+      let classifier = ml5.imageClassifier("DoodleNet");
+
+      function predict() {
+        classifier.classify(canvas, (err, res) => {
+          if (err) return;
+
+          let text = "🤖 AI Guess:<br>";
+
+          for (let i = 0; i < 3; i++) {
+            let name = res[i].label;
+            let conf = (res[i].confidence * 100).toFixed(1);
+
+            text += `${i + 1}️⃣ ${name} (${conf}%)<br>`;
+          }
+
+          document.getElementById("result").innerHTML = text;
+        });
+      }
+    </script>
+  </body>
+</html>
