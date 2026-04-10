@@ -2,54 +2,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Card</title>
   </head>
   <body>
     <canvas id="can"></canvas>
-
     <script>
-      //Colour fill box
-      let canvas = document.getElementById("can");
-      canvas.width = 500;
-      canvas.height = 550;
-      canvas.style = "border:2px solid red";
-      let ctx = canvas.getContext("2d");
-      ctx.fillStyle = "blue";
-      ctx.fillRect(30, 30, 150, 150);
+      let Canvas = document.getElementById("can");
+      Canvas.height = 500;
+      Canvas.width = 500;
+      Canvas.style.border = "2px solid red";
+      let ctx = Canvas.getContext("2d");
+      ctx.fillStyle = "#0f192b";
+      ctx.fillRect(0, 0, 500, 500);
 
-      //Border Box without Colour
-      ctx.strokeStyle = "red";
-      ctx.lineWidth = 5;
-      ctx.strokeRect(220, 30, 150, 150);
-
-      //Box with Border
-      ctx.fillStyle = "blue";
-      ctx.fillRect(30, 220, 150, 150);
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = 5;
-      ctx.strokeRect(28, 220, 150, 150);
-
-      //Circle Draw
-      ctx.beginPath();
-      ctx.arc(280, 280, 80, 0, 2 * Math.PI);
-      ctx.fillStyle = "green";
+      //Card
+      ctx.fillStyle = "grey";
+      ctx.roundRect(130, 150, 250, 150, 10);
       ctx.fill();
-
-      //line draw
-      ctx.beginPath();
-      ctx.moveTo(600, 100); //position
-      ctx.lineTo(390, 100); //line draw
-      ctx.strokeStyle = "orange";
+      //Card with border
+      ctx.strokeStyle = "green";
+      ctx.lineWidth = 2;
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = "green";
+      ctx.roundRect(130, 150, 250, 150, 10);
       ctx.stroke();
 
-      // Font design with Colour fill
-      ctx.font = "50px Arial";
-      ctx.fillStyle = "brown";
-      ctx.fillText("Muskan Soni", 25, 420);
-
-      //Font  design
-      ctx.font = "80px Verdana";
-      ctx.strokeText("Muskan", 25, 500);
+      //circle
+      ctx.beginPath();
+      ctx.arc(260, 200, 30, 0, 2 * Math.PI);
+      ctx.fillStyle = "cyan";
+      ctx.fill();
+      //text
+      ctx.font = "27px verdana";
+      ctx.strokeStyle = "white";
+      ctx.strokeText("Muskan Soni", 178, 270);
     </script>
   </body>
 </html>
