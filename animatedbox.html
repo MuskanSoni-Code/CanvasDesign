@@ -1,0 +1,28 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="can"></canvas>
+    <script>
+      let canvas = document.getElementById("can");
+      canvas.width = 500;
+      canvas.height = 500;
+      canvas.style.border = "2px solid red";
+      let ctx = canvas.getContext("2d");
+      ctx.fillStyle = "black";
+      ctx.fillRect(10, 200, 50, 50);
+      let x = 0;
+      function move() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "black";
+        ctx.fillRect(x, 200, 50, 50);
+        x += 2;
+        requestAnimationFrame(move);
+      }
+      move();
+    </script>
+  </body>
+</html>
