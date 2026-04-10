@@ -1,0 +1,55 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="can"></canvas>
+
+    <script>
+      //Colour fill box
+      let canvas = document.getElementById("can");
+      canvas.width = 500;
+      canvas.height = 550;
+      canvas.style = "border:2px solid red";
+      let ctx = canvas.getContext("2d");
+      ctx.fillStyle = "blue";
+      ctx.fillRect(30, 30, 150, 150);
+
+      //Border Box without Colour
+      ctx.strokeStyle = "red";
+      ctx.lineWidth = 5;
+      ctx.strokeRect(220, 30, 150, 150);
+
+      //Box with Border
+      ctx.fillStyle = "blue";
+      ctx.fillRect(30, 220, 150, 150);
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 5;
+      ctx.strokeRect(28, 220, 150, 150);
+
+      //Circle Draw
+      ctx.beginPath();
+      ctx.arc(280, 280, 80, 0, 2 * Math.PI);
+      ctx.fillStyle = "green";
+      ctx.fill();
+
+      //line draw
+      ctx.beginPath();
+      ctx.moveTo(600, 100); //position
+      ctx.lineTo(390, 100); //line draw
+      ctx.strokeStyle = "orange";
+      ctx.stroke();
+
+      // Font design with Colour fill
+      ctx.font = "50px Arial";
+      ctx.fillStyle = "brown";
+      ctx.fillText("Muskan Soni", 25, 420);
+
+      //Font  design
+      ctx.font = "80px Verdana";
+      ctx.strokeText("Muskan", 25, 500);
+    </script>
+  </body>
+</html>
