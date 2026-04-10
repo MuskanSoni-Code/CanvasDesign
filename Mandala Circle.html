@@ -1,0 +1,37 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="can"></canvas>
+    <script>
+      let Canvas = document.getElementById("can");
+      Canvas.width = 500;
+      Canvas.height = 500;
+      Canvas.style.border = "2px solid black";
+      let ctx = Canvas.getContext("2d");
+      ctx.fillstyle = "black";
+      ctx.fillRect(0, 0, 500, 500);
+
+      //Circle
+      ctx.beginPath();
+      ctx.arc(250, 250, 58, 0, 2 * Math.PI);
+      ctx.strokeStyle = "yellow";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Ring circle
+      ctx.translate(250, 250);
+      for (let i = 1; i <= 30; i++) {
+        ctx.rotate(Math.PI / 15);
+        ctx.beginPath();
+        ctx.arc(0, 100, 40, 0, 2 * Math.PI);
+        ctx.strokeStyle = "blue";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    </script>
+  </body>
+</html>

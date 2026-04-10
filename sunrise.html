@@ -1,0 +1,53 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sunset</title>
+  </head>
+  <body>
+    <canvas id="can"></canvas>
+    <script>
+      let Canvas = document.getElementById("can");
+      Canvas.width = 500;
+      Canvas.height = 550;
+      Canvas.style.border = "2px solid green";
+      let ctx = Canvas.getContext("2d");
+      ctx.fillStyle = "green";
+      ctx.fillRect(0, 400, 550, 190);
+      //gradient Color
+      let sky = ctx.createLinearGradient(0, 0, 0, 400);
+      sky.addColorStop(0, "orange");
+      sky.addColorStop(1, "purple");
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, 600, 400);
+      //Sun
+      ctx.beginPath();
+      ctx.arc(370, 100, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "yellow";
+      ctx.fill();
+
+      //Tree
+      ctx.beginPath();
+      ctx.arc(100, 300, 40, 0, 2 * Math.PI);
+      ctx.fillStyle = "green";
+      ctx.fill();
+
+      //root
+      ctx.fillStyle = "brown";
+      ctx.fillRect(85, 340, 30, 80);
+      //Tree2
+      ctx.beginPath();
+      ctx.arc(400, 300, 40, 0, 2 * Math.PI);
+      ctx.fillStyle = "green";
+      ctx.fill();
+      //root2
+      ctx.fillStyle = "brown";
+      ctx.fillRect(389, 337, 30, 85);
+
+      // text
+      ctx.font = "32px Verdana";
+      ctx.fillStyle = "white";
+      ctx.fillText("Beautiful Sunrise", 30, 60);
+    </script>
+  </body>
+</html>
